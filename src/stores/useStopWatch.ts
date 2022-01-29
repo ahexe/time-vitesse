@@ -8,24 +8,27 @@ export const useStopWatch = defineStore('stop-watch', () => {
       hr: 0,
       min: 0,
       sec: 0,
+      isOn: false,
     },
   ])
 
   function newStopWatch(
-    Id = String(Date.now()),
+    Id = `Stopwatch ${swl.value.length}`,
     Hr = 0,
     Min = 0,
     Sec = 0,
+    IsOn = false,
   ) {
     swl.value.push({
       id: Id,
       hr: Hr,
       min: Min,
       sec: Sec,
+      isOn: IsOn,
     })
   }
 
-  function startStopWatch(Id = 'default') {
+  function stopWatchLogic(Id = 'default') {
     // selectedSW => selected StopWatch
     const selectedSW = ref(swl.value.find(val => val.id === Id))
     if (selectedSW.value) {
@@ -38,6 +41,19 @@ export const useStopWatch = defineStore('stop-watch', () => {
           selectedSW.value.min = 0
         }
       }
+    }
+  }
+
+  function toggleOnOff(Id = 'default') {
+    // selectedSW => selected StopWatch
+    const selectedSW = ref(swl.value.find(val => val.id === Id))
+    if (selectedSW.value) {
+      const interval = ref()
+      selectedSW.value.isOn = !selectedSW.value.isOn
+      if (selectedSW.value.isOn)
+        interval.value = setInterval(stopWatchLogic, 1000, Id)
+      else
+        clearInterval(interval.value)
     }
   }
 
@@ -67,8 +83,8 @@ export const useStopWatch = defineStore('stop-watch', () => {
   return {
     swl,
     newStopWatch,
-    startStopWatch,
     showTime,
+    toggleOnOff,
   }
 })
 
