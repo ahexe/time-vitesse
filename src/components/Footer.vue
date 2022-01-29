@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+// import { storeToRefs } from 'pinia'
 import { isDark, toggleDark } from '~/composables'
 import { useStopWatch } from '~/stores/useStopWatch'
 
@@ -12,11 +12,7 @@ const toggleLocales = () => {
 }
 
 const sW = useStopWatch()
-const { startStopWatch } = sW
-const {
-  // swl,
-  showTime,
-} = storeToRefs(sW)
+const { toggleOnOff, showTest, showTime } = sW
 </script>
 
 <template>
@@ -42,8 +38,13 @@ const {
       <carbon-logo-github />
     </a>
   </nav>
-  <h3>{{ showTime }}</h3>
-  <button @click="startStopWatch()">
+  <h3>{{ showTime() }}</h3>
+  <button @click="toggleOnOff('default')">
     start
+  </button>
+  <hr>
+  <h4>{{ showTime('test') }}</h4>
+  <button @click="showTest()">
+    test
   </button>
 </template>

@@ -48,21 +48,27 @@ export const useStopWatch = defineStore('stop-watch', () => {
     // selectedSW => selected StopWatch
     const selectedSW = ref(swl.value.find(val => val.id === Id))
     if (selectedSW.value) {
-      const interval = ref()
       selectedSW.value.isOn = !selectedSW.value.isOn
-      if (selectedSW.value.isOn)
-        interval.value = setInterval(stopWatchLogic, 1000, Id)
-      else
-        clearInterval(interval.value)
+      function foo() {
+        let x
+        if (selectedSW.value?.isOn) {
+          stopWatchLogic(Id)
+          x = setTimeout(foo, 1000)
+        }
+        else {
+          clearTimeout(x)
+        }
+      }
+      foo()
     }
   }
 
-  const showTime = computed((Id = 'default') => {
+  function showTime(Id = 'default') {
     // selectedSW => selected StopWatch
     const selectedSW = ref(swl.value.find(val => val.id === Id))
     if (selectedSW.value)
       return `${selectedSW.value.hr}:${selectedSW.value.min}:${selectedSW.value.sec}`
-  })
+  }
 
   // coolTimer(): string {
   //   let sec = String(this.seconds);
@@ -80,11 +86,16 @@ export const useStopWatch = defineStore('stop-watch', () => {
   //   return hr + ":" + min + ":" + sec;
   // }
 
+  function showTest() {
+    newStopWatch('test', 23, 58, 50, false)
+    toggleOnOff('test')
+  }
+
   return {
-    swl,
     newStopWatch,
     showTime,
     toggleOnOff,
+    showTest,
   }
 })
 
