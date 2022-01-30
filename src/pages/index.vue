@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores/user'
+import { useDateSW } from '~/stores/useDateSW'
 
 const user = useUserStore()
 const name = ref(user.savedName)
@@ -11,6 +12,10 @@ const go = () => {
 }
 
 const { t } = useI18n()
+
+// ! my data
+const stopwatch = useDateSW()
+const { togglePause, showStopwatch } = stopwatch
 </script>
 
 <template>
@@ -26,6 +31,12 @@ const { t } = useI18n()
     <p>
       <em class="text-sm opacity-75">{{ t('intro.desc') }}</em>
     </p>
+
+    <!-- ! My Data -->
+    <button @click="togglePause()">
+      Show Stopwatch
+    </button>
+    <h3>{{ showStopwatch() }}</h3>
 
     <div class="py-4" />
 
