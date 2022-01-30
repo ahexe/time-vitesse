@@ -5,6 +5,7 @@ export const useDateSW = defineStore('date-stopwatch', () => {
     {
       id: 'default',
       pause: true,
+      hardPause: false,
       startDate: Date.now(),
       sw: '',
     },
@@ -16,6 +17,7 @@ export const useDateSW = defineStore('date-stopwatch', () => {
       stopwatchList.value.push({
         id: Id,
         pause: true,
+        hardPause: false,
         startDate: Date.now(),
         sw: '',
       })
@@ -23,9 +25,9 @@ export const useDateSW = defineStore('date-stopwatch', () => {
     else { return 'There is another stopwatch with this name.' }
   }
 
-  function getSecs(oldDate: number) {
+  function getSecs(oldDate: number, newDate = Date.now()) {
     const t1 = oldDate
-    const t2 = Date.now()
+    const t2 = newDate
     const sum = (t2 - t1) / 1000
     const Secs = Number(sum.toFixed(0))
     return Secs
@@ -68,6 +70,27 @@ export const useDateSW = defineStore('date-stopwatch', () => {
       foo()
     }
   }
+
+  // function toggleHardPause(Id = 'default') {
+  //   const selectedStopwatch = ref(stopwatchList.value.find(sw => sw.id === Id))
+  //   if (selectedStopwatch.value) {
+  //     selectedStopwatch.value.hardPause = !selectedStopwatch.value.hardPause
+  //     const startDate = selectedStopwatch.value.startDate
+  //     const stopDate = Date.now()
+  //     const diff = stopDate - startDate
+  //     function foo() {
+  //       let x
+  //       if (!selectedStopwatch.value?.hardPause) {
+  //         updateStopwatch(Id)
+  //         x = setTimeout(foo, 1000)
+  //       }
+  //       else {
+  //         clearTimeout(x)
+  //       }
+  //     }
+  //     foo()
+  //   }
+  // }
 
   function showStopwatch(Id = 'default') {
     const selectedStopwatch = ref(stopwatchList.value.find(sw => sw.id === Id))
